@@ -92,6 +92,9 @@ public class MainActivity extends ActionBarActivity implements OnSeekBarChangeLi
 	
 	public void startAlarm(View view) {
         this.cancelAlarm(view);
+
+        this.obtenerPreferences();
+
         Intent alarmIntent = new Intent(this, AlarmReceiver.class);
         alarmIntent.putExtra("device",device);
         pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -200,10 +203,12 @@ public class MainActivity extends ActionBarActivity implements OnSeekBarChangeLi
 
 
     private void obtenerPreferences() {
+        Log.d(TAG,"obtenerPreferences");
         SharedPreferences prefs = PreferenceManager
                 .getDefaultSharedPreferences(this);
-
         device = prefs.getString("device", "Meteo");
+        Log.d(TAG,device);
+        Log.d(TAG,"fin obtenerPreferences");
     }
 
 }
