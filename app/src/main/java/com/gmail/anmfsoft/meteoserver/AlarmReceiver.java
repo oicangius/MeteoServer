@@ -15,6 +15,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
@@ -87,15 +88,26 @@ public class AlarmReceiver extends BroadcastReceiver{
         Log.d(TAG,"fin insertarEnDB");
     }
 
-
+    public String bundle2string(Bundle bundle) {
+        String string = "Bundle{";
+        for (String key : bundle.keySet()) {
+            string += " " + key + " => " + bundle.get(key) + ";";
+        }
+        string += " }Bundle";
+        return string;
+    }
 
     @Override
     public void onReceive(Context arg0, Intent arg1) {
         Log.d(TAG,"onReceive");
-
+        //Bundle extrasBundle = arg1.getExtras();
         if (arg1.getExtras()!=null && this.device==""){
             this.device = arg1.getExtras().getString("device");
-            Log.d(TAG,"onReceive, device="+device);
+            Log.d(TAG,"onReceive, if, device="+device);
+            Log.d(TAG,this.bundle2string(arg1.getExtras()));
+        }else {
+            this.device = "MeteoBlue";
+            Log.d(TAG,"onReceive, else, device="+device);
         }
 
 

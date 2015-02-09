@@ -1,27 +1,12 @@
 package com.gmail.anmfsoft.meteoserver;
 
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Set;
-import java.util.UUID;
-
-import android.app.Activity;
-import android.content.IntentSender;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -108,10 +93,11 @@ public class MainActivity extends ActionBarActivity implements OnSeekBarChangeLi
 	public void startAlarm(View view) {
         this.cancelAlarm(view);
         Intent alarmIntent = new Intent(this, AlarmReceiver.class);
-        pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
+        alarmIntent.putExtra("device",device);
+        pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Bundle extras = alarmIntent.getExtras();
-        extras.putString("device", device);
+
+        //extras.putString("device", device);
 
         Log.d(TAG,"startAlarm");
 	    manager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
@@ -123,6 +109,10 @@ public class MainActivity extends ActionBarActivity implements OnSeekBarChangeLi
             interval=60000*ii;
 	    Log.d("MeteoServer",interval+"");
 	    manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
+        /*
+        Bundle extras = alarmIntent.getExtras();
+        extras.putString("device", device);
+        */
         Log.d(TAG,"fin startAlarm");
 	}
 
